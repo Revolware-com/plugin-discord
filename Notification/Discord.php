@@ -147,13 +147,13 @@ class Discord extends Base implements NotificationInterface
             $title = $this->notificationModel->getTitleWithoutAuthor($eventName, $eventData);
         }
 
+        $title = str_replace('the task', $eventData['task']['title'], $title);
+
         $message = '**['.$project['name'].']** ';
         $message .= $title;
-        $message .= ' **('.$eventData['task']['title'].')**';
         if($this->helper) {
-            $message .= ' (';
+            $message .= ' ';
             $message .= $this->helper->url->to('TaskViewController', 'show', array('task_id' => $eventData['task']['id'], 'project_id' => $project['id']), '', true);
-            $message .= ')';
         }
 
         return array(
