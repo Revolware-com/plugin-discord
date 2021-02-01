@@ -45,7 +45,7 @@ class Plugin extends Base
 
     public function getPluginHomepage()
     {
-        return 'slackhttps://github.com/Revolware-com/plugin-discord';
+        return 'https://github.com/Revolware-com/plugin-discord';
     }
 
     public function getCompatibleVersion()
