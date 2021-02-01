@@ -6,8 +6,7 @@ Receive Kanboard notifications on Discord.
 Author
 ------
 
-- Andrej Zlámala
-- License MIT
+- Revolware
 
 Requirements
 ------------
@@ -28,22 +27,12 @@ Note: Plugin folder is case-sensitive.
 Configuration
 -------------
 
-Firstly, you have to generate a new webhook url in Discord (**Configured Integrations > Incoming Webhook**) [from here](https://discord.com/apps/A0F7XDUAZ-incoming-webhooks).
+Firstly, you have to generate a new webhook url in Discord (**Server configuration > Integrations > New Webhook**) [wiki](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks).
 
-You can define only one webhook url (**Settings > Integrations > Discord**) and override the channel for each project and user.
-
-### Receive individual user notifications
-
-- Go to your user profile then choose **Integrations > Discord**
-- Copy and paste the webhook url from Discord or leave it blank if you want to use the global webhook url
-- Use `@username` to receive direct message to your user
-- Enable Discord in your user notifications **Notifications > Discord**
-
-### Receive project notifications to a room
+### Receive project notifications to a channel
 
 - Go to the project settings then choose **Integrations > Discord**
-- Copy and paste the webhook url from Discord or leave it blank if you want to use the global webhook url
-- Use `#channel` to receive messages in a specific channel
+- Copy and paste the webhook url from Discord
 - Enable Discord in your project notifications **Notifications > Discord**
 
 ## Troubleshooting
