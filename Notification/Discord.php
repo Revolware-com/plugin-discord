@@ -1,6 +1,6 @@
 <?php
 
-namespace Kanboard\Plugin\Slack\Notification;
+namespace Kanboard\Plugin\Discord\Notification;
 
 use Kanboard\Core\Base;
 use Kanboard\Core\Notification\NotificationInterface;
@@ -9,12 +9,12 @@ use ReflectionClass;
 use ReflectionException;
 
 /**
- * Slack Notification
+ * Discord Notification
  *
  * @package  notification
- * @author   Frederic Guillot
+ * @author   Andrej Zlámala
  */
-class Slack extends Base implements NotificationInterface
+class Discord extends Base implements NotificationInterface
 {
 
     /**
@@ -85,8 +85,7 @@ class Slack extends Base implements NotificationInterface
      */
     public function notifyUser(array $user, $eventName, array $eventData)
     {
-        $webhook = $this->userMetadataModel->get($user['id'], 'slack_webhook_url', $this->configModel->get('slack_webhook_url'));
-        $channel = $this->userMetadataModel->get($user['id'], 'slack_webhook_channel');
+        $webhook = $this->userMetadataModel->get($user['id'], 'discord_webhook_url', $this->configModel->get('discord_webhook_url'));
 
         if (! empty($webhook)) {
             $events = $this->getUserEventValues($user['id']);
@@ -97,11 +96,11 @@ class Slack extends Base implements NotificationInterface
                         foreach ($eventData['tasks'] as $task) {
                             $project = $this->projectModel->getById($task['project_id']);
                             $eventData['task'] = $task;
-                            $this->sendMessage($webhook, $channel, $project, $eventName, $eventData);
+                            $this->sendMessage($webhook, $project, $eventName, $eventData);
                         }
                     } else {
                         $project = $this->projectModel->getById($eventData['task']['project_id']);
-                        $this->sendMessage($webhook, $channel, $project, $eventName, $eventData);
+                        $this->sendMessage($webhook, $project, $eventName, $eventData);
                     }
                 }
             }
@@ -118,14 +117,13 @@ class Slack extends Base implements NotificationInterface
      */
     public function notifyProject(array $project, $eventName, array $eventData)
     {
-        $webhook = $this->projectMetadataModel->get($project['id'], 'slack_webhook_url', $this->configModel->get('slack_webhook_url'));
-        $channel = $this->projectMetadataModel->get($project['id'], 'slack_webhook_channel');
+        $webhook = $this->projectMetadataModel->get($project['id'], 'discord_webhook_url', $this->configModel->get('discord_webhook_url'));
 
         if (! empty($webhook)) {
             $events = $this->getProjectEventValues($project['id']);
             foreach($events as $event) {
                 if ($eventName == $event) {
-                    $this->sendMessage($webhook, $channel, $project, $eventName, $eventData);
+                    $this->sendMessage($webhook, $project, $eventName, $eventData);
                 }
             }
         }
@@ -149,40 +147,34 @@ class Slack extends Base implements NotificationInterface
             $title = $this->notificationModel->getTitleWithoutAuthor($eventName, $eventData);
         }
 
-        $message = '*['.$project['name'].']* ';
+        $message = '**['.$project['name'].']** ';
         $message .= $title;
-        $message .= ' ('.$eventData['task']['title'].')';
-
-        if ($this->configModel->get('application_url') !== '') {
-            $message .= ' - <';
+        $message .= ' **('.$eventData['task']['title'].')**';
+        if($this->helper) {
+            $message .= ' (';
             $message .= $this->helper->url->to('TaskViewController', 'show', array('task_id' => $eventData['task']['id'], 'project_id' => $project['id']), '', true);
-            $message .= '|'.t('view the task on Kanboard').'>';
+            $message .= ')';
         }
 
         return array(
-            'text' => $message,
+            'content' => $message,
             'username' => 'Kanboard',
-            'icon_url' => 'https://raw.githubusercontent.com/kanboard/kanboard/master/assets/img/favicon.png',
+            'avatar_url' => 'https://raw.githubusercontent.com/kanboard/kanboard/master/assets/img/favicon.png',
         );
     }
 
     /**
-     * Send message to Slack
+     * Send message to Discord
      *
      * @access protected
      * @param  string    $webhook
-     * @param  string    $channel
      * @param  array     $project
      * @param  string    $eventName
      * @param  array     $eventData
      */
-    protected function sendMessage($webhook, $channel, array $project, $eventName, array $eventData)
+    protected function sendMessage($webhook, array $project, $eventName, array $eventData)
     {
         $payload = $this->getMessage($project, $eventName, $eventData);
-
-        if (! empty($channel)) {
-            $payload['channel'] = $channel;
-        }
 
         $this->httpClient->postJsonAsync($webhook, $payload);
     }

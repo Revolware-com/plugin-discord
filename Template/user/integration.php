@@ -9,7 +9,7 @@ $events = array_filter($constants, function($key)  {
 }, ARRAY_FILTER_USE_KEY);
 ?>
 
-<h3><i class="fa fa-slack fa-fw"></i>Slack</h3>
+<h3><i class="fa fa-discord fa-fw"></i>Discord</h3>
 <div class="panel">
 
     <div style="display:flex; flex-direction:row;">
@@ -17,14 +17,12 @@ $events = array_filter($constants, function($key)  {
             <h3>General</h3>
             <div style="display:flex; flex-direction:column;">
 
-                <?= $this->form->label(t('Webhook URL'), 'slack_webhook_url') ?>
-                <?= $this->form->text('slack_webhook_url', $values) ?>
+                <?= $this->form->label(t('Webhook URL'), 'discord_webhook_url') ?>
+                <?= $this->form->text('discord_webhook_url', $values) ?>
 
-                <?= $this->form->label(t('Channel/Group/User (Optional)'), 'slack_webhook_channel') ?>
-                <?= $this->form->text('slack_webhook_channel', $values, array(), array('placeholder="@username"')) ?>
 
                 <p class="form-help">
-                    <a href="https://github.com/kanboard/plugin-slack#configuration" target="_blank"><?= t('Help on Slack integration') ?></a>
+                    <a href="https://github.com/Revolware-com/plugin-discord#configuration" target="_blank"><?= t('Help on Discord integration') ?></a>
                 </p>
 
             </div>

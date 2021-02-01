@@ -16,11 +16,11 @@ jobs:
     - name: Checkout Plugin repo
       uses: actions/checkout@v2
       with:
-        path: plugins/Slack
+        path: plugins/Discord
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
     - name: Unit tests with Sqlite
-      run: ./vendor/bin/phpunit -c tests/units.sqlite.xml plugins/Slack/Test/
+      run: ./vendor/bin/phpunit -c tests/units.sqlite.xml plugins/Discord/Test/
 
   Postgres:
     runs-on: ubuntu-latest
@@ -47,11 +47,11 @@ jobs:
     - name: Checkout Plugin repo
       uses: actions/checkout@v2
       with:
-        path: plugins/Slack
+        path: plugins/Discord
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
     - name: Unit tests with Postgres
-      run: ./vendor/bin/phpunit -c tests/units.postgres.xml plugins/Slack/Test/
+      run: ./vendor/bin/phpunit -c tests/units.postgres.xml plugins/Discord/Test/
       env:
         DB_HOSTNAME: postgres
         DB_PORT: ${{ job.services.postgres.ports[5432] }}
@@ -79,11 +79,11 @@ jobs:
     - name: Checkout Plugin repo
       uses: actions/checkout@v2
       with:
-        path: plugins/Slack
+        path: plugins/Discord
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
     - name: Unit tests with MariaDB
-      run: ./vendor/bin/phpunit -c tests/units.mysql.xml plugins/Slack/Test/
+      run: ./vendor/bin/phpunit -c tests/units.mysql.xml plugins/Discord/Test/
       env:
         DB_HOSTNAME: mariadb
         DB_PASSWORD: secret
