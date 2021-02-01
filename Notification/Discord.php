@@ -147,7 +147,9 @@ class Discord extends Base implements NotificationInterface
             $title = $this->notificationModel->getTitleWithoutAuthor($eventName, $eventData);
         }
 
-        $title = str_replace('the task', $eventData['task']['title'], $title);
+        $task_name = '**'.$eventData['task']['title'].'**';
+
+        $title = str_replace('the task', $task_name, $title);
 
         $message = '**['.$project['name'].']** ';
         $message .= $title;
